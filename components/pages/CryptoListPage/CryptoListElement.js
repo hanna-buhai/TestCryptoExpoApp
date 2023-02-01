@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const CryptoListElement = ({ id, symbol, name, percentChange24h, onPress }) => {
+const CryptoListElement = ({ symbol, name, percentChange24h, onPress }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text style={styles.cryptoSymbol}>{symbol}</Text>

@@ -12,7 +12,7 @@ const CryptoListPage = ({ navigation }) => {
   const username = useSelector(state => state.user.data.username)
   const [filterValue, setFilterValue] = useState('')
 
-  const currencyList =  useSelector(state => state.cryptoList.data)
+  const currencyList = useSelector(state => state.cryptoList.data)
 
   const dispatch = useDispatch()
 
@@ -20,8 +20,8 @@ const CryptoListPage = ({ navigation }) => {
     dispatch(fetchCryptoData())
   }, [])
 
-  const openCryptoChartPage = () => {
-    navigation.navigate(PAGES.CRYPTO_CHART_PAGE)
+  const openCryptoChartPage = currencyId => () => {
+    navigation.navigate(PAGES.CRYPTO_CHART_PAGE, { currencyId })
   }
 
   const setListFilter = () => {}
@@ -29,11 +29,10 @@ const CryptoListPage = ({ navigation }) => {
   const renderCurrencyItem = ({ item }) => (
     <CryptoListElement
       key={item.id}
-      id={item.id}
       symbol={item.symbol}
       name={item.name}
       percentChange24h={item.percent_change_24h}
-      onPress={openCryptoChartPage}
+      onPress={openCryptoChartPage(item.id)}
     />
   )
 

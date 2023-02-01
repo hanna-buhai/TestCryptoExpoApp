@@ -9,10 +9,11 @@ const styles = StyleSheet.create({
   },
 })
 
-const CryptoChartPage = ({ navigation }) => {
+const CryptoChartPage = ({ route, navigation }) => {
+  const { currencyId } = route.params
   return (
     <View style={styles.container}>
-      <Text>This is a Cryptocurrency Chart Page</Text>
+      <Text>This is a Cryptocurrency Chart Page for {currencyId}</Text>
     </View>
   )
 }
