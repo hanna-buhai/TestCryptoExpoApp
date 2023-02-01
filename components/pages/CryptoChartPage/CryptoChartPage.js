@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { LineChart, YAxis, Grid } from 'react-native-svg-charts'
+import { useNetInfo } from "@react-native-community/netinfo";
 import { fetchCryptocurrencyData, clearDataSet } from '../../../redux/cryptoGraph/cryptoGraphReducer'
 import { selectCryptocurrencyUSDDataPoints } from '../../../redux/cryptoGraph/cryptoGraphSelectors'
 
@@ -35,6 +36,7 @@ const CryptoChartPage = ({ route, navigation }) => {
   );
   const refreshCount = useRef(0)
 
+  const netInfo = useNetInfo();
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -53,10 +55,10 @@ const CryptoChartPage = ({ route, navigation }) => {
           setTargetCountDownDate(countDownDate)
         }    
       }, 1000);
-      if (refreshCount.current >= REFRESH_ATTEMPTS_LIMIT) clearInterval(interval)
+      if (refreshCount.current >= REFRESH_ATTEMPTS_LIMIT || !netInfo.isConnected) clearInterval(interval)
     return () => clearInterval(interval)
   };
-  }, [currencyId, targetCountDownDate])
+  }, [currencyId, targetCountDownDate, netInfo.isConnected])
 
    useEffect(
     () =>
@@ -69,7 +71,7 @@ const CryptoChartPage = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Text>This is a Cryptocurrency Chart Page for {currencyId}</Text>
-      <Text>Seconds left: {Math.ceil(countDown / 1000)}</Text>
+      <Text>Seconds left: {netInfo.isConnected ? Math.ceil(countDown / 1000) : '--:--'}</Text>
       <View style={styles.graphContainer}>
           <YAxis
               data={data}
