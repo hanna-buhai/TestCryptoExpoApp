@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { LineChart, YAxis, Grid } from 'react-native-svg-charts'
@@ -18,18 +18,45 @@ const styles = StyleSheet.create({
   }
 })
 
+const CHART_REFRESH_INTERVAL = 30 * 1000
+const REFRESH_ATTEMPTS_LIMIT = 5
 
 const CryptoChartPage = ({ route, navigation }) => {
   const { currencyId } = route.params
   
   const data = useSelector(selectCryptocurrencyUSDDataPoints)
   const contentInset = { top: 20, bottom: 20 }
+  const now = new Date()
+  const timeObject = new Date(now.getTime() + CHART_REFRESH_INTERVAL);
+  const countDownDate = new Date(timeObject).getTime(); 
+  const [targetCountDownDate, setTargetCountDownDate] = useState(countDownDate)
+  const [countDown, setCountDown] = useState(
+    countDownDate - new Date().getTime()
+  );
+  const refreshCount = useRef(0)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (currencyId) dispatch(fetchCryptocurrencyData(currencyId))
-  }, [currencyId])
+    if (currencyId) {
+      refreshCount.current++
+      dispatch(fetchCryptocurrencyData(currencyId))
+
+      const interval = setInterval(() => {
+        const newCountdown = targetCountDownDate - new Date().getTime()
+        if (newCountdown > 0) {
+          setCountDown(newCountdown);
+        } else {
+          const now = new Date()
+          const timeObject = new Date(now.getTime() + CHART_REFRESH_INTERVAL);
+          const countDownDate = new Date(timeObject).getTime(); 
+          setTargetCountDownDate(countDownDate)
+        }    
+      }, 1000);
+      if (refreshCount.current >= REFRESH_ATTEMPTS_LIMIT) clearInterval(interval)
+    return () => clearInterval(interval)
+  };
+  }, [currencyId, targetCountDownDate])
 
    useEffect(
     () =>
@@ -39,10 +66,10 @@ const CryptoChartPage = ({ route, navigation }) => {
     [navigation]
   );
 
-
   return (
     <View style={styles.container}>
       <Text>This is a Cryptocurrency Chart Page for {currencyId}</Text>
+      <Text>Seconds left: {Math.ceil(countDown / 1000)}</Text>
       <View style={styles.graphContainer}>
           <YAxis
               data={data}
@@ -51,7 +78,7 @@ const CryptoChartPage = ({ route, navigation }) => {
                   fill: 'grey',
                   fontSize: 10,
               }}
-              numberOfTicks={10}
+              numberOfTicks={16}
               formatLabel={(value) => `${value} USD`}
           />
           <LineChart
