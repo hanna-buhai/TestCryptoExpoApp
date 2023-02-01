@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { Text, View, Button, TextInput, FlatList } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { PAGES } from '../../../constants/navigation'
-import { fetchCryptoData } from '../../../redux/cryptoList/cryptoReducer'
+import { fetchCryptoData, addFilter, removeFilter } from '../../../redux/cryptoList/cryptoReducer'
 import CryptoListElement from './CryptoListElement'
 import styles from './CryptoListPage.styles'
+import { FILTER_FIELDS, FILTER_TYPES } from '../../../constants/crypto'
 
 const ListItemSeparator = () => <View style={styles.listItemSeparator}></View>
 
@@ -24,7 +25,24 @@ const CryptoListPage = ({ navigation }) => {
     navigation.navigate(PAGES.CRYPTO_CHART_PAGE, { currencyId })
   }
 
-  const setListFilter = () => {}
+  const setListFilter = () => {
+    if (filterValue) {
+      dispatch(
+        addFilter({
+          field: FILTER_FIELDS.PERCENT_CHANGE_24H,
+          type: FILTER_TYPES.MINIMUM,
+          value: filterValue,
+        }),
+      )
+    } else {
+      dispatch(
+        removeFilter({
+          field: FILTER_FIELDS.PERCENT_CHANGE_24H,
+          type: FILTER_TYPES.MINIMUM,
+        }),
+      )
+    }
+  }
 
   const renderCurrencyItem = ({ item }) => (
     <CryptoListElement
@@ -44,7 +62,12 @@ const CryptoListPage = ({ navigation }) => {
       <View style={styles.filterContainer}>
         <Text>Filter by minimum 24-hr % change:</Text>
         <View style={styles.filterInputContainer}>
-          <TextInput style={styles.input} onChangeText={setFilterValue} value={filterValue} />
+          <TextInput
+            style={styles.input}
+            onChangeText={setFilterValue}
+            value={filterValue}
+            keyboardType={'numeric'}
+          />
           <Button title="Filter" onPress={setListFilter} />
         </View>
       </View>

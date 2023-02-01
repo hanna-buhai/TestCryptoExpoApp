@@ -5,7 +5,7 @@ export const cryptoSlice = createSlice({
   name: 'cryptoList',
   initialState: {
     data: [],
-    filters: {},
+    filters: [],
   },
   reducers: {
     setData: (state, action) => {
@@ -13,6 +13,19 @@ export const cryptoSlice = createSlice({
     },
     setFilters: (state, action) => {
       state.filters = action.payload
+    },
+    addFilter: (state, action) => {
+      const filtersList = state.filters.filter(
+        item => !(item.field === action.payload.field && item.type === action.payload.type),
+      )
+      filtersList.push(action.payload)
+      state.filters = filtersList
+    },
+    removeFilter: (state, action) => {
+      const filtersList = state.filters.filter(
+        item => !(item.field === action.payload.field && item.type === action.payload.type),
+      )
+      state.filters = filtersList
     },
   },
 })
@@ -24,6 +37,6 @@ export const fetchCryptoData = () => {
   }
 }
 
-export const { setData, setFilters } = cryptoSlice.actions
+export const { setData, setFilters, addFilter, removeFilter } = cryptoSlice.actions
 
 export default cryptoSlice.reducer
