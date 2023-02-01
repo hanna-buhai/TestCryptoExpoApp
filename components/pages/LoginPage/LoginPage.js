@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import { Text, View, Button, TextInput } from 'react-native'
+import { useDispatch } from 'react-redux'
 import { PAGES } from '../../../constants/navigation'
 import styles from './LoginPage.styles'
+import { setUserData } from '../../../redux/user/userReducer'
 
 const LoginPage = ({ navigation }) => {
   const [username, setUsername] = useState('')
   const [hasError, setHasError] = useState(false)
+
+  const dispatch = useDispatch()
 
   const openCryptoListPage = () => {
     navigation.navigate(PAGES.CRYPTO_LIST_PAGE)
@@ -14,7 +18,7 @@ const LoginPage = ({ navigation }) => {
   const login = () => {
     if (!!username) {
       openCryptoListPage()
-      // TODO save user data
+      dispatch(setUserData({ username }))
       onChangeUsername('')
     } else {
       setHasError(true)
