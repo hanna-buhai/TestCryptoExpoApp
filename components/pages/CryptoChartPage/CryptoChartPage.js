@@ -11,7 +11,7 @@ import styles from './CryptoChartPage.styles'
 const CHART_REFRESH_INTERVAL = 30 * 1000
 const REFRESH_ATTEMPTS_LIMIT = 5
 
-const TimeLeftComponent = ({countDown, isNetworkConected}) => <Text>Seconds left: {isNetworkConected ? formatTime(countDown) : '--:--'}</Text>
+const TimeLeftComponent = ({countDown, isNetworkConected}) => <Text>Seconds left before update: {isNetworkConected ? formatTime(countDown) : '--:--'}</Text>
 
 const CryptoChartPage = ({ route, navigation }) => {
   const { currencyId } = route.params
