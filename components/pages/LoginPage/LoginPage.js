@@ -22,13 +22,17 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 4,
   },
+  inputError: {
+    borderColor: 'red',
+  },
   loginButton: {
     minWidth: 200,
   },
 })
 
 const LoginPage = ({ navigation }) => {
-  const [username, onChangeUsername] = useState('')
+  const [username, setUsername] = useState('')
+  const [hasError, setHasError] = useState(false)
 
   const openCryptoListPage = () => {
     navigation.navigate(PAGES.CRYPTO_LIST_PAGE)
@@ -40,15 +44,20 @@ const LoginPage = ({ navigation }) => {
       // TODO save user data
       onChangeUsername('')
     } else {
-      // TODO display an error
+      setHasError(true)
     }
+  }
+
+  const onChangeUsername = value => {
+    setUsername(value)
+    setHasError(false)
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.username}>Username:</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, hasError ? styles.inputError : {}]}
         onChangeText={onChangeUsername}
         value={username}
         autoFocus
