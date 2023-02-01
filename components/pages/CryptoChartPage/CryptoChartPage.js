@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { LineChart, YAxis, Grid } from 'react-native-svg-charts'
 import { useNetInfo } from "@react-native-community/netinfo";
 import { fetchCryptocurrencyData, clearDataSet } from '../../../redux/cryptoGraph/cryptoGraphReducer'
-import { selectCryptocurrencyUSDDataPoints } from '../../../redux/cryptoGraph/cryptoGraphSelectors'
+import { selectCryptocurrencyName, selectCryptocurrencyUSDDataPoints } from '../../../redux/cryptoGraph/cryptoGraphSelectors'
 import {formatTime} from '../../../utils/dateTimeUtils'
 import styles from './CryptoChartPage.styles'
 
@@ -17,7 +17,7 @@ const TimeLeftComponent = ({countDown, isNetworkConected}) => {
 
 const CryptoChartPage = ({ route, navigation }) => {
   const { currencyId } = route.params
-  
+  const currencyName = useSelector(selectCryptocurrencyName)
   const data = useSelector(selectCryptocurrencyUSDDataPoints)
   const contentInset = { top: 20, bottom: 20 }
   const now = new Date()
@@ -63,7 +63,7 @@ const CryptoChartPage = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text>This is a Cryptocurrency Chart Page for {currencyId}</Text>
+      <Text>{currencyName}</Text>
       <TimeLeftComponent countDown={countDown} isNetworkConected = {netInfo.isConnected} />
       <View style={styles.graphContainer}>
           <YAxis
