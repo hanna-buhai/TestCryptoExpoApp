@@ -1,24 +1,12 @@
 import { useEffect, useState, useRef } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { LineChart, YAxis, Grid } from 'react-native-svg-charts'
 import { useNetInfo } from "@react-native-community/netinfo";
 import { fetchCryptocurrencyData, clearDataSet } from '../../../redux/cryptoGraph/cryptoGraphReducer'
 import { selectCryptocurrencyUSDDataPoints } from '../../../redux/cryptoGraph/cryptoGraphSelectors'
 import {formatTime} from '../../../utils/dateTimeUtils'
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8
-  },
-  graphContainer: {
-    height: 200, flexDirection: 'row'
-  }
-})
+import styles from './CryptoChartPage.styles'
 
 const CHART_REFRESH_INTERVAL = 30 * 1000
 const REFRESH_ATTEMPTS_LIMIT = 5
