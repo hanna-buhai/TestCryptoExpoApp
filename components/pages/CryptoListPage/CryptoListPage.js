@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { PAGES } from '../../../constants/navigation'
-
+import { fetchCryptoData } from '../../../redux/cryptoList/cryptoReducer'
 import CryptoListElement from './CryptoListElement'
 
 const styles = StyleSheet.create({
@@ -43,11 +43,19 @@ const styles = StyleSheet.create({
   },
 })
 
+const ListItemSeparator = () => <View style={styles.listItemSeparator}></View>
+
 const CryptoListPage = ({ navigation }) => {
   const username = useSelector(state => state.user.data.username)
   const [filterValue, setFilterValue] = useState('')
 
-  const currencyList = []
+  const currencyList =  useSelector(state => state.cryptoList.data)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchCryptoData())
+  }, [])
 
   const openCryptoChartPage = () => {
     navigation.navigate(PAGES.CRYPTO_CHART_PAGE)
