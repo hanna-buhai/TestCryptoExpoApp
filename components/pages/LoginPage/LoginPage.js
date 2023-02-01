@@ -1,34 +1,7 @@
 import { useState } from 'react'
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native'
+import { Text, View, Button, TextInput } from 'react-native'
 import { PAGES } from '../../../constants/navigation'
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  username: {
-    width: '80%',
-    textAlign: 'left',
-  },
-  input: {
-    height: 40,
-    width: '80%',
-    marginTop: 8,
-    marginBottom: 24,
-    borderWidth: 1,
-    padding: 8,
-    borderRadius: 4,
-  },
-  inputError: {
-    borderColor: 'red',
-  },
-  loginButton: {
-    minWidth: 200,
-  },
-})
+import styles from './LoginPage.styles'
 
 const LoginPage = ({ navigation }) => {
   const [username, setUsername] = useState('')
