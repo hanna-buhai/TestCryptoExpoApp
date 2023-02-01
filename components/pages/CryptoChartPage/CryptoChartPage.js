@@ -5,6 +5,7 @@ import { LineChart, YAxis, Grid } from 'react-native-svg-charts'
 import { useNetInfo } from "@react-native-community/netinfo";
 import { fetchCryptocurrencyData, clearDataSet } from '../../../redux/cryptoGraph/cryptoGraphReducer'
 import { selectCryptocurrencyUSDDataPoints } from '../../../redux/cryptoGraph/cryptoGraphSelectors'
+import {formatTime} from '../../../utils/dateTimeUtils'
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +22,10 @@ const styles = StyleSheet.create({
 
 const CHART_REFRESH_INTERVAL = 30 * 1000
 const REFRESH_ATTEMPTS_LIMIT = 5
+
+const TimeLeftComponent = ({countDown, isNetworkConected}) => {
+  <Text>Seconds left: {isNetworkConected ? formatTime(countDown) : '--:--'}</Text>
+}
 
 const CryptoChartPage = ({ route, navigation }) => {
   const { currencyId } = route.params
@@ -71,7 +76,7 @@ const CryptoChartPage = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Text>This is a Cryptocurrency Chart Page for {currencyId}</Text>
-      <Text>Seconds left: {netInfo.isConnected ? Math.ceil(countDown / 1000) : '--:--'}</Text>
+      <TimeLeftComponent countDown={countDown} isNetworkConected = {netInfo.isConnected} />
       <View style={styles.graphContainer}>
           <YAxis
               data={data}
