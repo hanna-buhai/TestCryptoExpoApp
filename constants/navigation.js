@@ -1,0 +1,11 @@
+export const PAGES = {
+  LOGIN_PAGE: 'LOGIN_PAGE',
+  CRYPTO_LIST_PAGE: 'CRYPTO_LIST_PAGE',
+  CRYPTO_CHART_PAGE: 'CRYPTO_CHART_PAGE',
+}
+
+export const PAGE_TITLES = {
+  [PAGES.LOGIN_PAGE]: 'Login',
+  [PAGES.CRYPTO_LIST_PAGE]: 'Crypto List',
+  [PAGES.CRYPTO_CHART_PAGE]: 'Real-time Chart',
+}
