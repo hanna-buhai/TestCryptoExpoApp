@@ -6,6 +6,7 @@ import { fetchCryptoData, addFilter, removeFilter } from '../../../redux/cryptoL
 import CryptoListElement from './CryptoListElement'
 import styles from './CryptoListPage.styles'
 import { FILTER_FIELDS, FILTER_TYPES } from '../../../constants/crypto'
+import { selectFilteredCryptoList } from '../../../redux/cryptoList/cryptoSelectors'
 
 const ListItemSeparator = () => <View style={styles.listItemSeparator}></View>
 
@@ -13,7 +14,7 @@ const CryptoListPage = ({ navigation }) => {
   const username = useSelector(state => state.user.data.username)
   const [filterValue, setFilterValue] = useState('')
 
-  const currencyList = useSelector(state => state.cryptoList.data)
+  const currencyList = useSelector(selectFilteredCryptoList)
 
   const dispatch = useDispatch()
 
@@ -26,12 +27,12 @@ const CryptoListPage = ({ navigation }) => {
   }
 
   const setListFilter = () => {
-    if (filterValue) {
+    if (filterValue !== '') {
       dispatch(
         addFilter({
           field: FILTER_FIELDS.PERCENT_CHANGE_24H,
           type: FILTER_TYPES.MINIMUM,
-          value: filterValue,
+          value: Number(filterValue.replace(',', '.')),
         }),
       )
     } else {
