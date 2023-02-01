@@ -20,8 +20,8 @@ export const cryptoSlice = createSlice({
 
 export const fetchCryptocurrencyData = (currencyId) => {
   return async dispatch => {
-    const list = await getCryptocurrency(currencyId)
-    dispatch(pushDataPoint(list))
+    const data = await getCryptocurrency(currencyId)
+    if (data) dispatch(pushDataPoint(data))
   }
 }
 
