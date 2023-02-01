@@ -4,12 +4,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 8
   },
   graphContainer: {
-    height: 200, flexDirection: 'row'
+    flexDirection: 'row',
+    height: 300,
   }
 })
 
